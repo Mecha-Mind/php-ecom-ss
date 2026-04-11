@@ -1,0 +1,64 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer base {
+    body {
+        @apply bg-gray-100;
+    }
+    h1 {
+        @apply text-2xl font-bold;
+    }
+    h2 {
+        @apply text-xl font-bold;
+    }
+    h3 {
+        @apply text-lg font-bold;
+    }
+    h5 {
+        @apply text-sm font-bold;
+    }
+    h6 {
+        @apply text-xs font-bold;
+    }
+    p {
+        @apply text-base font-normal;
+    }
+    a {
+        @apply text-blue-500 hover:text-blue-700;
+    }
+    ul {
+        @apply list-disc list-inside;
+    }
+    li {
+        @apply list-item;
+    }
+    
+    .container {
+        @apply mx-auto;
+    }
+    
+}
+
+@layer components {
+    .btn {
+        @apply bg-blue-500 text-white px-4 py-2 rounded-md;
+    }
+    .btn-primary {
+        @apply bg-blue-500 text-white px-4 py-2 rounded-md;
+    }
+    .btn-secondary {
+        @apply bg-gray-500 text-white px-4 py-2 rounded-md;
+    }
+    .btn-danger {
+        @apply bg-red-500 text-white px-4 py-2 rounded-md;
+    }
+}
