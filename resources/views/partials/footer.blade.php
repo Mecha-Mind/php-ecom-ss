@@ -1,5 +1,9 @@
 {{-- resources/views/components/footer.blade.php --}}
 @props(['footer' => [], 'categories' => []])
+    <!-- <x-footer
+        :footer="$footer ?? []"
+        :categories="$categories ?? []"
+    /> -->
 
 <footer class="site-footer" role="contentinfo">
     <div class="container">

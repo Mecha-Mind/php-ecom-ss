@@ -21,6 +21,7 @@
     <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
     {{-- CSS بتاعك --}}
     @vite(['resources/css/app.css'])
+    @vite(['resources/css/home.css'])
 
 </head>
 <body>
@@ -37,10 +38,6 @@
         @yield('content')
     </main>
 
-    <x-footer
-        :footer="$footer ?? []"
-        :categories="$categories ?? []"
-    />
 
     {{-- Bootstrap JS --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
