@@ -57,3 +57,14 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## الطريقة الأولى — الصورة محفوظة كـ path في الـ DB:
+php// في الـ DB بيكون محفوظ: "products/iphone.jpg"
+// وفي الـ blade بتكتب:
+<!-- <img src="{{ asset('storage/' . $product->image) }}" alt=""> -->
+
+// وده بيشتغل بعد ما تعمل:
+// php artisan storage:link
+الطريقة التانية — الصورة في public/images مباشرة:
+php// زي اللي بنعمله دلوقتي
+<!-- <img src="{{ asset('images/p1.png') }}" alt=""> -->
+الفرق إن storage/ للملفات اللي بيرفعها اليوزر، وpublic/images للصور الثابتة اللي إنت حاطتها.

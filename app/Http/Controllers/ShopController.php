@@ -43,24 +43,49 @@ class ShopController extends Controller
         // بيانات الهوم بيدج
         $data['hero'] = [
             'title'    => 'أقوى عروض التخفيض على الموبايلات',
-            'subtitle' => 'أسعار مميزة وتخفيضات كبيرة خلال شهر اكتوبر على أفضل الموبيلات, الساعات, السماعات, الجرابات و الإكسسوارات.',
-            'image'    => 'images/hero.png',
+            'subtitle' => 'أسعار مميزة وتخفيضات كبيرة خلال شهر اكتوبر على أفضل الموبيلات، الساعات، السماعات، الجرابات والإكسسوارات.',
+            'image'    => 'images/hero.png', // ← صورة من public/images
             'btnText'  => 'تسوق الآن',
             'btnLink'  => route('products'),
         ];
 
+        $data['brands'] = [
+            // name للـ alt و img للصورة من public/images
+            ['name' => 'Anker',   'img' => 'images/brands/anker.png'],
+            ['name' => 'Samsung', 'img' => 'images/brands/samsung.png'],
+            ['name' => 'Realme',  'img' => 'images/brands/realme.png'],
+            ['name' => 'Infinix', 'img' => 'images/brands/infinix.png'],
+            ['name' => 'Xiaomi',  'img' => 'images/brands/xiaomi.png'],
+            ['name' => 'Apple',   'img' => 'images/brands/apple.png'],
+        ];
+
+        /*
+         | ── لما تيجي من الـ DB هيبقى كده ──
+         | $data['featuredProducts'] = Product::with('images')
+         |     ->where('is_featured', true)
+         |     ->latest()
+         |     ->take(8)
+         |     ->get()
+         |     ->map(fn($p) => [
+         |         'id'    => $p->id,
+         |         'name'  => $p->name,
+         |         'price' => $p->price,
+         |         'image' => $p->images->first()?->path ?? 'images/placeholder.png',
+         |         'slug'  => $p->slug,
+         |     ])->toArray();
+         */
         $data['featuredProducts'] = [
-            ['id'=>1,'name'=>'منتج 1','price'=>299,'image'=>'images/p1.png','slug'=>'product-1'],
-            ['id'=>2,'name'=>'منتج 2','price'=>499,'image'=>'images/p2.png','slug'=>'product-2'],
-            ['id'=>3,'name'=>'منتج 3','price'=>199,'image'=>'images/p3.png','slug'=>'product-3'],
-            ['id'=>4,'name'=>'منتج 4','price'=>399,'image'=>'images/p4.png','slug'=>'product-4'],
+            ['id'=>1,'name'=>'ايفون 13 برو ماكس 256 جيجا بايت، تيتانيوم، صحراوي G5 نسخة الشرق الأوسط','price'=>35000,'image'=>'images/p1.png','slug'=>'product-1'],
+            ['id'=>2,'name'=>'ايفون 13 برو ماكس 256 جيجا بايت، تيتانيوم، صحراوي G5 نسخة الشرق الأوسط','price'=>35000,'image'=>'images/p2.png','slug'=>'product-2'],
+            ['id'=>3,'name'=>'ايفون 13 برو ماكس 256 جيجا بايت، تيتانيوم، صحراوي G5 نسخة الشرق الأوسط','price'=>35000,'image'=>'images/p3.png','slug'=>'product-3'],
+            ['id'=>4,'name'=>'ايفون 13 برو ماكس 256 جيجا بايت، تيتانيوم، صحراوي G5 نسخة الشرق الأوسط','price'=>35000,'image'=>'images/p4.png','slug'=>'product-4'],
         ];
 
         $data['features'] = [
-            ['icon'=>'bi-truck',          'title'=>'توصيل سريع',    'text'=>'خلال 24 ساعة'],
-            ['icon'=>'bi-arrow-clockwise','title'=>'إرجاع مجاني',   'text'=>'خلال 14 يوم'],
-            ['icon'=>'bi-shield-check',   'title'=>'دفع آمن',       'text'=>'100% مضمون'],
-            ['icon'=>'bi-headset',        'title'=>'دعم 24/7',      'text'=>'نخدمك دايماً'],
+            ['icon'=>'bi-truck',          'title'=>'توصيل سريع',  'text'=>'خلال 24 ساعة'],
+            ['icon'=>'bi-arrow-clockwise','title'=>'إرجاع مجاني', 'text'=>'خلال 14 يوم'],
+            ['icon'=>'bi-shield-check',   'title'=>'دفع آمن',     'text'=>'100% مضمون'],
+            ['icon'=>'bi-headset',        'title'=>'دعم 24/7',    'text'=>'نخدمك دايماً'],
         ];
 
         return view('home', $data);

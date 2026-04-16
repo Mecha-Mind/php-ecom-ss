@@ -7,7 +7,7 @@
     
     {{-- SEO --}}
     <title>@yield('title', 'المتجر الإلكتروني')</title>
-    <meta name="description" content="@yield('description', 'وصف المتجر')">
+    <meta name="description" content="@yield('description', '')">
     
     {{-- Bootstrap RTL --}}
     <link rel="stylesheet"
@@ -16,7 +16,9 @@
     {{-- Bootstrap Icons --}}
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap">
+    <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
     {{-- CSS بتاعك --}}
     @vite(['resources/css/app.css'])
 
@@ -26,14 +28,19 @@
     {{-- الـ Navbar Component --}}
     <x-navbar
         :categories="$categories ?? []"
-        branch-name="فرع المعادي"
-        phone="01000000000"
+        branch-name="{{ $branchName ?? '' }}"
+        phone="{{ $phone ?? '' }}"
     />
 
     {{-- المحتوى الرئيسي --}}
     <main id="main-content" role="main">
         @yield('content')
     </main>
+
+    <x-footer
+        :footer="$footer ?? []"
+        :categories="$categories ?? []"
+    />
 
     {{-- Bootstrap JS --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

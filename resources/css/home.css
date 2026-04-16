@@ -1,0 +1,283 @@
+/* resources/css/home.css */
+
+/* ── Hero ── */
+.hero {
+    background: var(--bg-secondary);
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+}
+
+.hero__content  { padding-block: 2.5rem; }
+
+.hero__title {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    color: var(--heading);
+    line-height: 1.4;
+    margin-bottom: 1rem;
+}
+
+.hero__subtitle {
+    font-size: clamp(.9rem, 1.5vw, 1rem);
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 1.75rem;
+}
+
+.hero__btn {
+    background: var(--primary);
+    color: var(--white);
+    padding: .65rem 2rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: opacity var(--transition);
+}
+.hero__btn:hover { opacity: .88; color: var(--white); }
+
+.hero__img {
+    max-height: 480px;
+    object-fit: contain;
+}
+
+/* ── Brands Bar ── */
+.brands-bar {
+    border-top:    1px solid var(--stroke);
+    border-bottom: 1px solid var(--stroke);
+    padding-block: 1.5rem;
+    background: var(--white);
+}
+
+.brands-bar__track {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.brands-bar__item img {
+    max-height: 32px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: .7;
+    transition: filter var(--transition), opacity var(--transition);
+}
+.brands-bar__item:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* ── Products Grid ── */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+@media (max-width: 991px) {
+    .products-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 767px) {
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Product Card — من الـ Figma ── */
+/*
+ | Width:   292px → بيتحكم فيه الـ grid
+ | Height:  423px
+ | Radius:  16px
+ | Border:  1px solid var(--stroke)
+ | Padding: 16px
+ | Gap:     16px
+*/
+.product-card {
+    position: relative;
+    border: 1px solid var(--stroke);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--white);
+    min-height: 423px;
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+.product-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+}
+
+.product-card__wish {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px;
+    transition: color var(--transition);
+    z-index: 1;
+}
+.product-card__wish:hover { color: var(--red); }
+
+.product-card__img-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+}
+
+.product-card__img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    transition: transform .35s ease;
+}
+.product-card__img-wrap:hover .product-card__img {
+    transform: scale(1.04);
+}
+
+.product-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.product-card__name {
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--heading);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.product-card__name a:hover { color: var(--primary); }
+
+.product-card__price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--heading);
+}
+
+.product-card__actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.product-card__add-btn {
+    flex: 1;
+    background: var(--white);
+    border: 1px solid var(--stroke);
+    color: var(--heading);
+    font-size: .85rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    padding: .45rem .75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background var(--transition), color var(--transition);
+}
+.product-card__add-btn:hover {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+.product-card__wish-btn {
+    border: 1px solid var(--stroke);
+    color: var(--text);
+    border-radius: var(--radius-md);
+    padding: .45rem .6rem;
+    transition: color var(--transition), border-color var(--transition);
+}
+.product-card__wish-btn:hover {
+    color: var(--red);
+    border-color: var(--red);
+}
+
+/* ── Footer ── */
+.site-footer {
+    background: var(--bg-heading);
+    color: rgba(255,255,255,.75);
+    padding-block: 3rem 1.5rem;
+    margin-top: 4rem;
+}
+
+.footer__heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+}
+
+.footer__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+}
+.footer__links a {
+    font-size: .9rem;
+    color: rgba(255,255,255,.7);
+    transition: color var(--transition);
+}
+.footer__links a:hover { color: var(--white); }
+
+.footer__social {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+}
+
+.footer__social-link {
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,.75);
+    font-size: 1rem;
+    transition: background var(--transition), color var(--transition);
+}
+.footer__social-link:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+
+.footer__logo-wrap { display: inline-block; margin-bottom: 1rem; }
+
+.footer__address {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    font-size: .9rem;
+}
+.footer__address p { margin: 0; display: flex; align-items: center; gap: .5rem; }
+.footer__address a { color: rgba(255,255,255,.7); }
+.footer__address a:hover { color: var(--white); }
+
+.footer__bottom {
+    border-top: 1px solid rgba(255,255,255,.1);
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    text-align: center;
+    font-size: .85rem;
+    color: rgba(255,255,255,.5);
+}
+.footer__bottom p { margin: 0; }
