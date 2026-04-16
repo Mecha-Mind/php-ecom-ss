@@ -8,7 +8,7 @@ toggle.addEventListener('click', () => {
 
 console.log(navLinks)
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('#form');
+    const form = document.querySelector('#contact-form');
     const btn = form?.querySelector('button');
 
     if (!form) return;
