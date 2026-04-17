@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    //
+    protected $primaryKey = 'category_id';
+    protected $fillable = ['category_name', 'category_displaystatus', 'category_appearonhomepage', 'category_image'];
+
+    public function subCategories()
+    {
+        return $this->hasMany(SubCategory::class, 'category_id');
+    }
 }

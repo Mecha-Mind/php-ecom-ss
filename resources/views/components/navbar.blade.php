@@ -1,55 +1,37 @@
 {{-- resources/views/components/navbar.blade.php --}}
-
 @props([
-    'categories' => [],
-    'branchName' => 'الفرع الرئيسي',
-    'phone'      => '01000000000',
+    'staticLinks' => [],
+    'navData'     => [],
+    'branchName'  => '',
+    'phone'       => '',
+    'logo'        => 'images/primaryLogo.png',
 ])
 
-{{-- ══════════════════════════════════════════
-     TOP BAR
-══════════════════════════════════════════ --}}
-<div class="top-bar py-1 bg-var-primary text-white">
-    <div class="container container-fluid px-4">
-        <div class="d-flex justify-content-between align-items-center top-bar__wrapper">
-
-            {{-- رقم التليفون --}}
+{{-- TOP BAR --}}
+<div class="top-bar">
+    <div class="container-fluid px-4">
+        <div class="d-flex justify-content-between align-items-center h-100">
             <a href="tel:{{ $phone }}"
-               class="top-bar__phone text-white text-decoration-none d-flex align-items-center gap-2"
-               aria-label="اتصل بنا على {{ $phone }}">
-                <i class="bi bi-telephone-fill" aria-hidden="true"></i>
+               class="top-bar__link d-flex align-items-center gap-2"
+               aria-label="اتصل بنا">
+                <i class="bi bi-telephone-fill"></i>
                 <span>{{ $phone }}</span>
             </a>
-
-            {{-- اسم الفرع --}}
-            <span class="top-bar__branch d-flex align-items-center gap-2">
-                <i class="bi bi-shop" aria-hidden="true"></i>
-                {{ $branchName }}
-            </span>
-
+            <span>English</span>
         </div>
     </div>
 </div>
 
-{{-- ══════════════════════════════════════════
-     MAIN NAVBAR
-══════════════════════════════════════════ --}}
-<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top w-100"
+{{-- MAIN NAVBAR --}}
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top"
      role="navigation"
      aria-label="القائمة الرئيسية">
+    <div class="container-fluid px-4">
 
-    <div class="container container-fluid px-4">
-
-        {{-- ── الجزء الأول: اللوجو ── --}}
-        <a class="navbar-brand" href="{{ route('home') }}" aria-label="الصفحة الرئيسية">
-            <img src="{{ asset('images/logo.svg') }}"
-                 alt="شعار المتجر"
-                 width="120"
-                 height="40"
-                 loading="eager">
+        <a class="navbar-brand max-h-[80px] max-w-[280px] d-flex justify-content-center align-items-center" href="{{ route('home') }}">
+            <img src="{{ asset($logo) }}" alt="المتخصص" height="48" loading="eager">
         </a>
 
-        {{-- ── زرار الـ Hamburger للموبايل ── --}}
         <button class="navbar-toggler border-0"
                 type="button"
                 data-bs-toggle="collapse"
@@ -60,96 +42,118 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        {{-- ── الجزء التاني: اللينكات (flex-1) ── --}}
         <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav mx-auto gap-1">
 
-            <ul class="navbar-nav mx-auto gap-1" role="list">
+                @foreach($staticLinks as $link)
+                    @php
+                        /*
+                         | كل link بيبص على db_key الخاص بيه بس
+                         | ده اللي بيمنع التكرار
+                         | لو has_db = false → children فاضية → مفيش dropdown
+                        */
+                        $children = [];
+                        if (!empty($link['has_db']) && !empty($link['db_key'])) {
+                            $children = $navData[$link['db_key']] ?? [];
+                        }
+                        $hasChildren = count($children) > 0;
+                    @endphp
 
-                @foreach($categories as $category)
-                <li class="nav-item {{ count($category['children']) ? 'dropdown' : '' }}"
-                    role="listitem">
+                    <li class="nav-item {{ $hasChildren ? 'dropdown' : '' }}">
 
-                    @if(count($category['children']))
-                        {{-- Category فيها Submenu --}}
-                        <a class="nav-link dropdown-toggle fw-medium"
-                           href="#"
-                           role="button"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                           aria-haspopup="true">
-                            {{ $category['name'] }}
-                        </a>
+                        @if($hasChildren)
+                            <a class="nav-link dropdown-toggle fw-medium"
+                               href="#"
+                               data-bs-toggle="dropdown"
+                               data-bs-auto-close="outside"
+                               aria-expanded="false">
+                                {{ $link['name'] }}
+                            </a>
 
-                        <ul class="dropdown-menu border-0 shadow-sm" role="menu">
-                            @foreach($category['children'] as $child)
-                            <li role="none">
-                                <a class="dropdown-item"
-                                   href="{{ route('category.show', $child['slug']) }}"
-                                   role="menuitem">
-                                    {{ $child['name'] }}
-                                </a>
-                            </li>
-                            @endforeach
-                        </ul>
+                            <ul class="dropdown-menu border-0 shadow-sm">
 
-                    @else
-                        {{-- Category عادية بدون Submenu --}}
-                        <a class="nav-link fw-medium"
-                           href="{{ route('category.show', $category['slug']) }}"
-                           aria-current="{{ request()->is('category/'.$category['slug'].'*') ? 'page' : 'false' }}">
-                            {{ $category['name'] }}
-                        </a>
-                    @endif
+                                {{-- عرض الكل --}}
+                                <li>
+                                    <a class="dropdown-item fw-semibold text-primary border-bottom pb-2 mb-1"
+                                       href="{{ route($link['route']) }}">
+                                        <i class="bi bi-arrow-right ms-1"></i>
+                                        عرض الكل
+                                    </a>
+                                </li>
 
-                </li>
+                                @foreach($children as $cat)
+                                    @if(count($cat['children']) > 0)
+                                        {{--
+                                            Mega submenu:
+                                            - data-bs-auto-close="outside" مهم
+                                              عشان ميقفلش لما تدوس جوه الـ submenu
+                                            - dropend بيفتح السهم على اليسار في RTL
+                                        --}}
+                                        <li class="dropend">
+                                            <a class="dropdown-item dropdown-toggle"
+                                               href="{{ route('category.show', $cat['slug']) }}"
+                                               data-bs-toggle="dropdown"
+                                               data-bs-auto-close="outside"
+                                               aria-expanded="false">
+                                                {{ $cat['name'] }}
+                                            </a>
+                                            <ul class="dropdown-menu border-0 shadow-sm">
+                                                @foreach($cat['children'] as $sub)
+                                                    <li>
+                                                        {{--
+                                                            URL: /category/{slug_english}
+                                                            لكن في الـ breadcrumb أو الـ title
+                                                            بنعرض الاسم العربي
+                                                        --}}
+                                                        <a class="dropdown-item"
+                                                           href="{{ route('category.show', $sub['slug']) }}">
+                                                            {{ $sub['name'] }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @else
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="{{ route('category.show', $cat['slug']) }}">
+                                                {{ $cat['name'] }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+
+                            </ul>
+
+                        @else
+                            <a class="nav-link fw-medium"
+                               href="{{ route($link['route']) }}"
+                               @if(request()->routeIs($link['route'])) aria-current="page" @endif>
+                                {{ $link['name'] }}
+                            </a>
+                        @endif
+
+                    </li>
                 @endforeach
 
             </ul>
 
-            {{-- ── الجزء التالت: الأيقونات ── --}}
+            {{-- الأيقونات --}}
             <div class="navbar-icons d-flex align-items-center gap-3 ms-lg-3 mt-3 mt-lg-0">
-
-                {{-- Search --}}
-                <button class="btn btn-link p-0 text-dark"
-                        type="button"
-                        aria-label="بحث"
-                        data-bs-toggle="modal"
-                        data-bs-target="#searchModal">
-                    <i class="bi bi-search fs-5" aria-hidden="true"></i>
+                <button class="btn btn-link p-0 text-dark position-relative" aria-label="المفضلة">
+                    <i class="bi bi-heart fs-5"></i>
+                    <span class="navbar-badge">0</span>
                 </button>
-
-                {{-- User --}}
-                <a href="{{ route('account') }}"
-                   class="btn btn-link p-0 text-dark"
-                   aria-label="حسابي">
-                    <i class="bi bi-person fs-5" aria-hidden="true"></i>
+                <a href="{{ route('cart') }}" class="btn btn-link p-0 text-dark position-relative" aria-label="السلة">
+                    <i class="bi bi-bag fs-5"></i>
+                    <span class="navbar-badge">{{ session('cart_count', 0) }}</span>
                 </a>
-
-                {{-- Heart - i like this --}}
-                <a href="{{ route('cart') }}"
-                   class="btn btn-link p-0 text-dark position-relative"
-                   aria-label="اعجبني هذا">
-                    <i class="bi bi-heart fs-5" aria-hidden="true"></i>
-                    {{-- Badge عدد  --}}
-                    <span class="cart-badge position-absolute top-0 start-100 translate-middle
-                                 badge rounded-pill bg-var-heading"
-                          aria-label="عدد المنتجات التي اعجبتني">
-                        {{ session('cart_count', 0) }}
-                    </span>
+                <a href="{{ route('account') }}" class="btn btn-link p-0 text-dark" aria-label="حسابي">
+                    <i class="bi bi-person fs-5"></i>
                 </a>
-                {{-- Cart --}}
-                <a href="{{ route('cart') }}"
-                   class="btn btn-link p-0 text-dark position-relative"
-                   aria-label="سلة التسوق">
-                    <i class="bi bi-bag fs-5" aria-hidden="true"></i>
-                    {{-- Badge عدد المنتجات --}}
-                    <span class="cart-badge position-absolute top-0 start-100 translate-middle
-                                 badge rounded-pill bg-var-heading"
-                          aria-label="عدد المنتجات في السلة">
-                        {{ session('cart_count', 0) }}
-                    </span>
-                </a>
-
+                <button class="btn btn-link p-0 text-dark" aria-label="بحث">
+                    <i class="bi bi-search fs-5"></i>
+                </button>
             </div>
         </div>
     </div>

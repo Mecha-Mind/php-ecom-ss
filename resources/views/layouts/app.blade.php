@@ -27,17 +27,22 @@
 <body>
 
     {{-- الـ Navbar Component --}}
-    <x-navbar
-        :categories="$categories ?? []"
-        branch-name="{{ $branchName ?? '' }}"
-        phone="{{ $phone ?? '' }}"
-    />
+     @include('components.navbar', [
+        'staticLinks' => $staticLinks ?? [],
+        'navData'     => $navData     ?? [],
+        'branchName'  => $branchName  ?? '',
+        'phone'       => $phone       ?? '',
+    ])
 
     {{-- المحتوى الرئيسي --}}
     <main id="main-content" role="main">
         @yield('content')
     </main>
-
+    @include('components.footer', [
+        'footer'     => $footer     ?? [],
+        'categories' => isset($navData['categories']) ? $navData['categories'] : [],
+    ])
+    
 
     {{-- Bootstrap JS --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
