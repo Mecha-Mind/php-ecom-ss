@@ -8,12 +8,12 @@ use App\Http\Controllers\ShopController;
 // ── الصفحة الرئيسية ──
 Route::get('/', [ShopController::class, 'home'])->name('home');
 
-Route::get('/categories',         [ShopController::class, 'categories'])->name('categories');
-Route::get('/category/{id}',      [ShopController::class, 'category'])->name('category.show');
-Route::get('/subcategory/{id}',   [ShopController::class, 'subcategory'])->name('subcategory.show');
+Route::get('/categories',              [ShopController::class, 'categories'])->name('categories');
+Route::get('/category/{category}', [ShopController::class, 'category'])->name('category.show');
+Route::get('/subcategory/{subcategory}', [ShopController::class, 'subcategory'])->name('subcategory.show');
 
-Route::get('/maintenance', fn() => view('pages.maintenance'))->name('maintenance');
-Route::get('/maintenance/offers', fn() => view('pages.maintenance-offers'))->name('maintenance.offers');
+Route::get('/maintenance',         [ShopController::class, 'maintenance'])->name('maintenance');
+Route::get('/maintenance/offers',  [ShopController::class, 'maintenanceOffers'])->name('maintenance.offers');
 Route::get('/products',              [ShopController::class, 'products'])->name('products');
 Route::get('/products/{slug}',       [ShopController::class, 'product'])->name('product.show');
 
@@ -28,8 +28,13 @@ Route::get('/account/orders',        [ShopController::class, 'orders'])->name('a
 Route::get('/account/orders/{id}',   [ShopController::class, 'orderDetail'])->name('account.orders.show');
 
 // ── صفحات ثابتة ──
-Route::get('/about',   fn() => view('pages.about'))->name('about');
-Route::get('/contact', fn() => view('pages.contact'))->name('contact');
+Route::get('/about',   [ShopController::class, 'about'])->name('about');
+Route::get('/contact', [ShopController::class, 'contact'])->name('contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+Route::get('/popular', [ShopController::class, 'popular'])->name('popular');
+Route::get('/recent', [ShopController::class, 'recent'])->name('recent');
+Route::get('/faq', [ShopController::class, 'faq'])->name('faq');
+Route::get('/games', [ShopController::class, 'games'])->name('games');
 
 // Route::get('/', function () {
 //     return view('home');

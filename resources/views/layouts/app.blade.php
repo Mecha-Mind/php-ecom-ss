@@ -20,8 +20,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap">
     <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
     {{-- CSS بتاعك --}}
-    @vite(['resources/css/app.css'])
-    @vite(['resources/css/home.css'])
+    @vite(['resources/css/app.css', 'resources/css/home.css', 'resources/css/static-pages.css'])
 
 </head>
 <body>
@@ -41,6 +40,7 @@
     @include('components.footer', [
         'footer'     => $footer     ?? [],
         'categories' => isset($navData['categories']) ? $navData['categories'] : [],
+        'logo'       => $logo       ?? 'images/primaryLogo.png',
     ])
     
 

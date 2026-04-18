@@ -8,14 +8,20 @@ class ContactController extends Controller
 {
     public function send(Request $request)
     {
-        $request->validate([
-            'name'=>'required|max:100',
-            'email'=>'required|email',
-            'message'=>'required|max:1000',
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
+            'phone' => 'nullable|string|max:20',
+            'subject' => 'nullable|string|max:100',
+            'message' => 'required|string|max:1000',
         ]);
 
-        Mail::to('support@example.com')->send(new ContactMail($request->all()));
+        // حفظ الرسالة في ملف log
+        \Log::info('Contact Form Submission', $validated);
 
-        return back()->with('success','Message sent!');
+        // يمكنك إضافة حفظ في قاعدة البيانات لاحقاً
+        // ContactMessage::create($validated);
+
+        return back()->with('success', 'شكراً! تم استلام رسالتك. سنرد عليك قريباً.');
     }
 }

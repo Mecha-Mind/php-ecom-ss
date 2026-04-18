@@ -74,14 +74,14 @@ class ShopController extends Controller
             ->values()
             ->map(fn($cat) => [
                 'name'     => $cat->category_name,
-                'slug'     => $cat->category_id,
+                'slug'     => $cat->category_slug,
                 'children' => $cat->subCategories
                     // ← unique() عشان لو في تكرار تاني بيشيله
                     ->unique('subcategory_name')
                     ->values()
                     ->map(fn($sub) => [
                         'name' => $sub->subcategory_name,
-                        'slug' => $sub->subcategory_id,
+                        'slug' => $sub->subcategory_slug,
                     ])->toArray(),
             ])->toArray();
 
@@ -195,12 +195,9 @@ class ShopController extends Controller
         return view('pages.categories', $data);
     }
 
-    public function category($id)
+    public function category(Category $category)
     {
         $data = $this->sharedData();
-        $category = Category::find($id);
-
-        if (!$category) abort(404);
 
         $data['category']     = $category;
         $data['categoryName'] = $category->category_name; // عربي للعرض
@@ -208,17 +205,14 @@ class ShopController extends Controller
         return view('pages.category', $data);
     }
 
-    public function subcategory($id)
+    public function subcategory(SubCategory $subcategory)
     {
         $data = $this->sharedData();
-        $sub = SubCategory::with('category')->find($id);
 
-        if (!$sub) abort(404);
-
-        $data['subcategory']     = $sub;
-        $data['subcategoryName'] = $sub->subcategory_name;
-        $data['categoryName']    = $sub->category->category_name ?? '';
-        $data['pageTitle']       = $sub->category->category_name . ' / ' . $sub->subcategory_name;
+        $data['subcategory']     = $subcategory;
+        $data['subcategoryName'] = $subcategory->subcategory_name;
+        $data['categoryName']    = $subcategory->category->category_name ?? '';
+        $data['pageTitle']       = $subcategory->category->category_name . ' / ' . $subcategory->subcategory_name;
         return view('pages.subcategory', $data);
     }
 
@@ -239,8 +233,13 @@ class ShopController extends Controller
     public function account()     { return view('pages.account',     $this->sharedData()); }
     public function orders()      { return view('pages.orders',      $this->sharedData()); }
     public function maintenance() { return view('pages.maintenance', $this->sharedData()); }
+    public function maintenanceOffers() { return view('pages.maintenance-offers', $this->sharedData()); }
     public function about()       { return view('pages.about',       $this->sharedData()); }
     public function contact()     { return view('pages.contact',     $this->sharedData()); }
+    public function popular()     { return view('pages.popular',     $this->sharedData()); }
+    public function recent()      { return view('pages.recent',      $this->sharedData()); }
+    public function faq()         { return view('pages.faq',         $this->sharedData()); }
+    public function games()       { return view('pages.games',       $this->sharedData()); }
 
     public function orderDetail($id)
     {
